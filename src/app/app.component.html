@@ -1,0 +1,33 @@
+<div class="container">
+    <h1>Phrase & Word Analyzer 📝</h1>
+    <textarea
+            [(ngModel)]="text"
+            (input)="analyzeText()"
+            (select)="captureSelection($event)"
+            placeholder="Enter your text here..."
+            rows="10"
+    ></textarea>
+
+    <div class="stats">
+        <span>Characters: {{ charCount }}</span>
+        <span>Words: {{ wordCount }}</span>
+    </div>
+
+    <div class="actions">
+        <button (click)="fetchSynonyms()" [disabled]="!selectedText.trim() || isLoading">
+            Find synonyms for "{{ selectedText || '...' }}"
+        </button>
+        <button (click)="copyText()">Copy Text</button>
+    </div>
+
+    <div class="synonyms-container" *ngIf="isLoading || synonyms.length > 0">
+        <h2>Synonyms:</h2>
+        <div *ngIf="isLoading" class="loader">Loading...</div>
+        <ul *ngIf="!isLoading && synonyms.length > 0">
+            <li *ngFor="let synonym of synonyms" (click)="replaceWithSynonym(synonym.word)">
+                {{ synonym.word }}
+            </li>
+        </ul>
+        <p *ngIf="!isLoading && synonyms.length === 0">No synonyms found.</p>
+    </div>
+</div>
